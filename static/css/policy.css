@@ -1,0 +1,43 @@
+.policy-page {
+    margin-top: 150px
+}
+
+.articles__item {
+    padding: 0
+}
+
+.articles__item-title {
+    margin-top: 0
+}
+
+.articles__item-descr {
+    margin-top: 20px
+}
+
+.articles__item-descr h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #16224a;
+    line-height: 21px;
+    margin-top: 15px;
+    margin-bottom: 20px
+}
+
+.articles__item-descr p:last-child {
+    padding-bottom: 20px
+}
+
+.articles__item-title p:last-child {
+    font-weight: 600
+}
+
+@media(max-width: 768px) {
+    .articles__item.active .articles__item-descr {
+        margin-left: 0
+    }
+    .articles__item-descr h2 {
+        font-size: 18px;
+        margin-top: 10px;
+        margin-bottom: 15px
+    }
+}

@@ -1,0 +1,21 @@
+{% load static %}
+
+<main class="thankspage">
+    <div class="container">
+        <h1>Ошибка!</h1>
+        <p>{{ message|safe }}</p>
+        {% comment %} <button class="catalog__return">Вернуться в каталог</button> {% endcomment %}
+        {% comment %} <div class="nf-button-group">
+            <a href="/" class="catalog__return">
+                <div>На главную </div>
+            </a>
+            <a href="/catalog/" class="catalog__return">
+                <div>В каталог </div>
+            </a>
+        </div>    {% endcomment %}
+        <div class="notfound__bottom-btns">
+            <a href="/">На главную</a>
+            <a href="/catalog/">В каталог </a>
+        </div>
+    </div>
+</main>

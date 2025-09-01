@@ -1,0 +1,73 @@
+{% load static %}
+{% load catalog_tags %}
+
+
+
+
+<main class="articles-page">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+        
+        <h1> Статьи {% if page_obj.number > 1 %} - Страница {{ page_obj.number }} {% endif %}</h1>        
+        
+        <section class="articles">
+            <div class="container">
+                <div class="articles__wrapper">
+                    {% for article in articles %}
+                    <div class="articles__item">
+                        <div class="articles__item-image">
+                            {% if article.image %}
+                                <img src="{{ article.image.url }}" alt="{{ article.name }}">
+                            {% else %}
+                                <img src="{% static 'img/images/article.webp' %}" alt="">
+                            {% endif %}
+                        </div>
+                        <div class="articles__item-content">
+                            <div class="articles__item-title">
+                                <p>{{ article.name }}</p>
+                                <p>{{ article.overview }}</p>
+                            </div>
+                            <div class="articles__item-descr">
+                                {{ article.description|safe|truncatewords_html:40 }}
+                                <a href="{{ article.get_absolute_url }}">Читать полностью</a>
+                            </div>
+                        </div>
+                        <div class="articles__item-arrow">
+                            <a href="{{ article.get_absolute_url }}" aria-label="Читать статью {{ article.name }}">
+                                <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <p>Статьи не найдены.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# --- SECTION PAGINATION --- #}
+            {% if page_obj.has_other_pages %}
+            <div class="category__showmore">
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a class="arrow arrow-left" href="{% if page_obj.previous_page_number == 1 %}{{ request.path }}{% else %}?page={{ page_obj.previous_page_number }}{% endif %}"> </a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <span class="pagination__num current">{{ num }}</span>
+                        {% else %}
+                            <a class="pagination__num" href="{% if num == 1 %}{{ request.path }}{% else %}?page={{ num }}{% endif %}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="arrow arrow-right" href="?page={{ page_obj.next_page_number }}"> </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+</main>

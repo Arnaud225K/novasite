@@ -1,0 +1,36 @@
+{% load static %}
+<div class="modal" id="navigation" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="navigation-title">
+            <div class="modal__header">
+                <button class="modal__close" aria-label="Закрыть" data-micromodal-close>
+                    <img src="{% static 'img/icons/close.svg' %}" alt="">
+                </button>
+            </div>
+            <ul class="modal__content">
+                <li> <a href="{% url 'menu:index' %}">Главная</a></li>
+                <li> <a href="/catalog/">Каталог</a></li>
+                <li> <a href="/services/">Услуги</a></li>
+                <li> <a href="/o-nas/">О компании</a></li>
+                <li class="expand"> Клиенту
+                    <ul>
+                        <li> <a href="/articles/">Статьи</a></li>
+                        <li> <a href="/dostavka-i-oplata/">Доставка и оплата</a></li>
+                    </ul>
+                </li>
+                <li> <a href="/contacts/">Контакты</a></li>
+                <li> <a href="{% url 'checkout:checkout_page' %}">Корзина</a></li>
+            </ul>
+            <div class="modal__footer">
+                <div class="modal__footer-social"> 
+                    <a href="#"> <img src="{% static 'img/icons/whatsapp_light.svg' %}" alt="whatsapp"></a>
+                    <a href="#"> <img src="{% static 'img/icons/telegram_light.svg' %}" alt="telegram"></a>
+                </div>
+                <div class="modal__footer-contacts"> 
+                    <a href="tel:{{ current_filial.phone|default:'+7(999)999-99-99' }}">{{ current_filial.phone|default:'+7(999)999-99-99' }}</a>
+                    <a href="mailto:{{ current_filial.email|default:'test@novator.ru'}}">{{ current_filial.email|default:'test@novator.ru'}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

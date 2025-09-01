@@ -1,0 +1,57 @@
+.aboutpage {
+    margin-top: 180px
+}
+
+.aboutpage h3 {
+    font-size: 32px
+}
+
+.aboutpage__info,
+.aboutpage .geography {
+    margin-top: 60px
+}
+
+.aboutpage__info .text,
+.aboutpage .geography .text {
+    margin-top: 60px
+}
+
+.aboutpage__info .text p,
+.aboutpage .geography .text p {
+    margin-top: 5px
+}
+
+.aboutpage .geography__map {
+    margin-top: 60px
+}
+
+@media(max-width: 992px) {
+    .aboutpage__info,
+    .aboutpage .geography {
+        margin-top: 45px
+    }
+    .aboutpage h3 {
+        font-size: 24px
+    }
+    .aboutpage__info .text,
+    .aboutpage .geography .text {
+        margin-top: 44px
+    }
+    .aboutpage .geography__map {
+        margin-top: 44px
+    }
+}
+
+@media(max-width: 576px) {
+    .aboutpage h3 {
+        font-size: 22px
+    }
+    .aboutpage__info,
+    .aboutpage .geography {
+        margin-top: 34px
+    }
+    .aboutpage__info .text,
+    .aboutpage .geography .text {
+        margin-top: 34px
+    }
+}

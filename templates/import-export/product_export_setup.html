@@ -1,0 +1,264 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+
+{% block extrastyle %}
+    {{ block.super }}
+    {{ form.media.css }}
+    
+    <style>
+        #content-main { 
+            max-width: 1400px; 
+            min-width: 1400px;
+            width: 1400px;
+            margin: 0 auto;
+        }
+        
+        #content-main h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        #content-main > p {
+            color: #5a6c7d;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            background: #f8fbf9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        #content-main form {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e3e8f2;
+        }
+        
+        #content-main fieldset.module {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #content-main .form-row {
+            padding: 20px 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f1f3f6;
+        }
+        
+        #content-main .form-row:last-of-type {
+            border-bottom: none;
+        }
+        
+        #content-main label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        label.required:after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .select2-container {
+            width: 100% !important;
+            border-radius: 8px !important;
+            border: 2px solid #dbe4f0 !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .select2-container--default.select2-container--focus {
+            border-color: #3498db !important;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1) !important;
+        }
+        
+        .select2-selection--multiple {
+            border: none !important;
+            min-height: 44px !important;
+        }
+        
+        .select2-selection__choice {
+            background: linear-gradient(135deg, #3498db, #2980b9) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 16px !important;
+            padding: 4px 12px !important;
+        }
+        
+        .select2-selection__choice__remove {
+            color: white !important;
+            margin-right: 5px !important;
+        }
+        
+        #filter-loading-indicator {
+            display: none;
+            color: #3498db;
+            margin-left: 10px;
+            font-style: italic;
+            font-size: 14px;
+        }
+        
+        .help {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .submit-row {
+            padding-top: 25px;
+            border-top: 2px solid #f1f3f6;
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        input[type="submit"] {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input[type="submit"]:hover {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        input[type="submit"]:active {
+            transform: translateY(0);
+        }
+        
+        .errorlist {
+            background: #ffe6e6;
+            color: #e74c3c;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid #fadbd8;
+            margin-top: 8px;
+            font-size: 14px;
+            list-style: none;
+        }
+        
+        .errorlist li {
+            margin: 5px 0;
+        }
+        
+
+        #filter-loading-indicator.loading {
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <form method="get" action="{% url 'import_export:product_export_download' %}">
+        <h1>{{ title }}</h1>
+        <p>Выберите категорию. Фильтры, используемые в этой категории, будут автоматически выбраны для экспорта.</p>
+        
+        <fieldset class="module aligned">
+            <div class="form-row field-category">
+                {{ form.category.errors }}
+                <label class="required" for="{{ form.category.id_for_label }}">{{ form.category.label }}:</label>
+                {{ form.category }}
+            </div>
+
+            <div class="form-row field-filter_categories_to_export">
+                {{ form.filter_categories_to_export.errors }}
+                <label for="{{ form.filter_categories_to_export.id_for_label }}">{{ form.filter_categories_to_export.label }}:</label>
+                {{ form.filter_categories_to_export }}
+                <span id="filter-loading-indicator">🔄 Загрузка...</span>
+                {% if form.filter_categories_to_export.help_text %}
+                    <p class="help">{{ form.filter_categories_to_export.help_text }}</p>
+                {% endif %}
+            </div>
+        </fieldset>
+        
+        <div class="submit-row">
+            <input type="submit" value="📤 Экспорт Продуктов" class="default" name="export_products">
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+    {{ block.super }}
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    {{ form.media.js }}
+
+    <script>
+        $(document).ready(function() {
+            
+            const categorySelect = $('#id_category');
+            const filterSelect = $('#id_filter_categories_to_export');
+            const loadingIndicator = $('#filter-loading-indicator');
+            const ajaxUrlTemplate = "{% url 'import_export:ajax_get_relevant_filters' category_id=0 %}".replace('/0/', '/{categoryId}/');
+
+            if (categorySelect.length && filterSelect.length) {
+                console.log("Initializing dynamic filter pre-selection...");
+
+                categorySelect.on('change', function() {
+                    const selectedCategoryId = $(this).val();
+                    console.log("Category changed to ID:", selectedCategoryId);
+
+                    filterSelect.val(null).trigger('change.select2');
+
+                    if (selectedCategoryId) {
+                        loadingIndicator.show();
+                        const url = ajaxUrlTemplate.replace('{categoryId}', selectedCategoryId);
+
+                        $.ajax({
+                            url: url,
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data && data.relevant_filter_ids) {
+                                    console.log("Received relevant filter IDs:", data.relevant_filter_ids);
+                                    filterSelect.val(data.relevant_filter_ids).trigger('change.select2');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error fetching relevant filters:", status, error);
+                            },
+                            complete: function() {
+                                loadingIndicator.hide();
+                            }
+                        });
+                    } else {
+                        loadingIndicator.hide();
+                    }
+                });
+
+                if (categorySelect.val()) {
+                    console.log("Triggering initial filter load for pre-selected category ID:", categorySelect.val());
+                    setTimeout(function() {
+                        categorySelect.trigger('change');
+                    }, 200);
+                }
+
+            } else {
+                console.warn("Could not find required select elements for dynamic pre-selection.");
+            }
+        });
+    </script>
+{% endblock %}

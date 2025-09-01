@@ -1,0 +1,15 @@
+{% load static %}
+{% load catalog_tags %}
+
+<main class="catalog">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+        <h1>Каталог в {{ current_filial.name_info }}</h1>
+        <section class="catalog__list">
+            {% for category in root_categories %}
+                {% include "includes/cards/catalog-card/catalog-card.html" %}
+            {% endfor %}
+        </section>
+        {% include "includes/s-all/s-all-seo-text/s-all-seo-text.html" %}
+    </div>
+</main>

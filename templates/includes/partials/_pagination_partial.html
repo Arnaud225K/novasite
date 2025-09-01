@@ -1,0 +1,35 @@
+{% if products_list.has_other_pages %}
+<div class="category__showmore">
+    {# --- BOUTON CHARGER PLUS --- #}
+    {% if products_list.has_next %}
+        <div class="category__showmore-button">
+            <button class="js-load-more-btn"
+                    data-next-page="{{ products_list.next_page_number }}"
+                    data-total-pages="{{ products_list.paginator.num_pages }}">
+                Загрузить еще
+            </button>
+        </div>
+    {% endif %}
+
+    {# --- PAGINATION CLASSIQUE --- #}
+    <div class="pagination"> 
+        {% if products_list.has_previous %}
+            <a class="arrow arrow-left js-pagination-link" href="?page={{ products_list.previous_page_number }}"> </a>
+        {% endif %}
+
+        {% for page_num in products_list.paginator.page_range %}
+            {% if products_list.number == page_num %}
+                <span class="pagination__num current">{{ page_num }}</span>
+            {% elif page_num > products_list.number|add:-3 and page_num < products_list.number|add:3 %}
+                <a class="pagination__num js-pagination-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            {% elif forloop.first or forloop.last %}
+                <div class="pagination__skip">...</div>
+            {% endif %}
+        {% endfor %}
+
+        {% if products_list.has_next %}
+            <a class="arrow arrow-right js-pagination-link" href="?page={{ products_list.next_page_number }}"> </a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

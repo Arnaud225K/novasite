@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Новый Заказ из Корзины №{{ order.id }}</title>
+    <style type="text/css">
+        body { width: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; font-size: 14px; color: #333333; background-color: #f4f4f4; }
+        table { border-spacing: 0; }
+        td { padding: 0; }
+        img { border: 0; }
+        .email-container { margin: auto; width: 100%; max-width: 650px; background-color: #ffffff; border-spacing: 0; border: 1px solid #ddd; }
+        .header { background-color: #21488B; padding: 20px; text-align: center; border-bottom: 1px solid #ddd;}
+        .header h1 { margin: 0; color: #ffffff; font-size: 24px; }
+        .content-block { padding: 25px; background-color: #ffffff; }
+        .content-block h2 { font-size: 18px; color: #333333; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;}
+        .details-box p { margin: 8px 0; line-height: 1.6; }
+        .details-box strong { min-width: 150px; display: inline-block; color: #555; }
+        .section-box { margin-bottom: 25px; padding: 20px; background-color: #f9f9f9; border: 1px solid #f0f0f0; border-radius: 4px; }
+        .order-items-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+        .order-items-table th, .order-items-table td { border: 1px solid #dddddd; padding: 10px; text-align: left; font-size: 13px; }
+        .order-items-table th { background-color: #f0f0f0; font-weight: bold; }
+        .order-items-table td.numeric, .order-items-table th.numeric { text-align: right; }
+        .totals-table { width: 100%; max-width: 350px; margin-left: auto; margin-top: 20px; font-size: 14px; }
+        .totals-table td { padding: 6px 0; }
+        .totals-table td:last-child { text-align: right; font-weight: bold; }
+        .grand-total td { font-weight: bold; font-size: 16px; border-top: 1px solid #ccc; padding-top: 10px !important; }
+        .footer { background-color: #f0f0f0; padding: 20px; text-align: center; color: #777777; font-size: 12px; }
+        .footer a { color: #228aed; text-decoration: none; }
+        .button-link { display: inline-block; background-color: #228aed; color: #ffffff !important; padding: 12px 25px; text-decoration: none; border-radius: 5px; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <table class="email-container" role="presentation" border="0" cellpadding="0" cellspacing="0">
+        <!-- HEADER -->
+        <tr>
+            <td class="header">
+                <h1>МТК-НОВАТОР</h1>
+            </td>
+        </tr>
+        <!-- CONTENT -->
+        <tr>
+            <td class="content-block">
+                <h2>Новый заказ из корзины № {{ order.id }}</h2>
+                
+                <div class="section-box details-box">
+                    <p><strong>Дата заказа:</strong> {{ order.created_at|date:"d.m.Y H:i" }}</p>
+                    <p><strong>Филиал:</strong> {{ order.filial.name|default:"Не определен" }}</p>
+                </div>
+
+                <div class="section-box details-box">
+                    <h2>Данные клиента</h2>
+                    {% if order.name %}<p><strong>Ф.И.О:</strong> {{ order.name }}</p>{% endif %}
+                    <p><strong>Телефон:</strong> {{ order.phone }}</p>
+                    {% if order.email %}<p><strong>Email:</strong> <a href="mailto:{{ order.email }}">{{ order.email }}</a></p>{% endif %}
+                    {% if order.comment %}<p><strong>Комментарий:</strong><br>{{ order.comment|linebreaksbr }}</p>{% endif %}
+                    {% if order.file and order.file.url %}
+                        <p><strong>Прикрепленный файл:</strong> <a href="{{ site_url }}{{ order.file.url }}" target="_blank">Скачать файл</a></p>
+                    {% endif %}
+                    <p><strong>Согласие на маркетинг:</strong> {% if order.marketing_consent %}Да{% else %}Нет{% endif %}</p>
+                </div>
+                
+                <h2>Состав заказа</h2>
+                <table class="order-items-table" role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Товар</th>
+                            <th class="numeric">Кол-во</th>
+                            <th class="numeric">Цена за ед.</th>
+                            <th class="numeric">Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                        <tr>
+                            <td>{{ item.product_title }}</td>
+                            <td class="numeric">{{ item.quantity }}</td>
+                            <td class="numeric">
+                                {% if item.price == 0 %}Договорная
+                                {% else %}{% if item.price_type == "from" %}от {% endif %}{{ item.price|floatformat:"0" }} ₽{% endif %}
+                            </td>
+                            <td class="numeric">
+                                {% if item.price == 0 %}Договорная
+                                {% else %}{% if item.price_type == "from" %}от {% endif %}{{ item.get_cost|floatformat:"0" }} ₽{% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <table class="totals-table" role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <tr class="grand-total">
+                        <td>Итоговая стоимость:</td>
+                        <td>
+                            {% if order.has_non_fixed_price %}
+                                Договорная
+                            {% else %}
+                                {{ order.total_cost|floatformat:"0" }} ₽
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+
+                {% if admin_order_url %}
+                <p style="text-align:center;">
+                    <a href="{{ admin_order_url }}" class="button-link">Посмотреть заказ в админ-панели</a>
+                </p>
+                {% endif %}
+            </td>
+        </tr>
+        <!-- FOOTER -->
+        <tr>
+            <td class="footer">
+                <p>© {% now "Y" %} МТК-НОВАТОР. Все права защищены.</p>
+                {% if site_url %}<p><a href="{{ site_url }}">Перейти на сайт</a></p>{% endif %}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,40 @@
+
+<div class="product__price noprice">
+    <div class="product__price-title">Узнайте цену</div>
+    <p class="product__price-descr">Оставьте свой номер телефона и мы свяжемся с вами в течение 15 минут</p>
+
+    <form class="modal__form" id="form_get_price_id" method="post" action="{% url 'checkout:send_form_order' %}">
+        {% csrf_token %}
+        <input name="comp_input_hidden" value="">
+        <div style="position:absolute; left:-9000px; top: -9000px; height:1px; width:1px; overflow:hidden;" aria-hidden="true">
+            <label for="id_hp_confirm_url">Подтвердите URL (оставьте пустым)</label>
+            <input type="text" name="website_url_confirm" id="id_hp_confirm_url" value="" tabindex="-1" autocomplete="off">
+        </div> 
+
+        <input type="hidden" name="form_render_timestamp" value="{{ form_render_timestamp_value }}">
+        <input type="hidden" name="type" value="price_request">
+        <input type="hidden" name="comment" value="{{ product.full_title }}">
+
+        <input type="tel" name="phone" placeholder="+7 999 999-99-99*" required data-phone>
+        <div id="phone-error" class="phone-error" style="display:none; color:red;">Неправильный номер телефона</div>
+
+        <div class="product__price-btn"> 
+            <button class="submit-form-btn" type="submit">Запросить цену</button>
+            <div class="form-block__agreement"> 
+                <label>
+                    <input type="checkbox" name="agreement">
+                    <div class="custom-icon"></div>
+                    <p>Я даю свое согласие на обработку моих персональных данных в соответствии с законом №152-ФЗ "О
+                    персональных данных" и <a href="/policy/">Политикой обработки персональных данных</a></p>
+                </label>
+                <div class="agreement-error form-error" style="display:none; color:red; margin-top: 5px;">Это поле обязательно для заполнения.</div>
+                
+                <label>
+                    <input type="checkbox" name="marketing_consent" checked>
+                    <div class="custom-icon"></div>
+                    <p>Я соглашаюсь получать информационно-рекламные материалы</p>
+                </label>
+            </div>
+        </div>
+    </form>            
+</div>

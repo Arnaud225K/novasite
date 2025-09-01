@@ -1,0 +1,24 @@
+{% load static catalog_tags %}
+
+{% for item in cart %}
+    <div class="cartpage__item" data-product-id="{{ item.product.id }}">
+        <img class="cartpage__item-img" src="{% if item.product.images.first %}{{ item.product.images.first.image.url }}{% else %}{% static 'img/images/category_img.webp' %}{% endif %}" alt="{{ item.product.full_title }}">
+        <a class="cartpage__item-name" href="{{ item.product.get_absolute_url }}">{{ item.product.full_title }}</a>
+        <div class="cartpage__item-controls">
+            <button class="left js-cart-qty-decrease">−</button>
+            <input class="cartpage__qty js-cart-qty-input" type="text" value="{{ item.quantity }}">
+            <button class="right js-cart-qty-increase">+</button>
+        </div>
+        <div class="cartpage__item-price">
+            {% with item_price=item.price|to_decimal %}
+                {% if item_price == 0 %}
+                    Договорная
+                {% else %}
+                    {% if item.price_type == "from" %}от {% endif %}
+                    {{ item.total_price|format_price }} ₽
+                {% endif %}
+            {% endwith %}
+        </div>
+        <button class="cartpage__item-del js-cart-remove" title="Удалить товар"><img src="{% static 'img/icons/del.svg' %}" alt="Удалить"></button>
+    </div>
+{% endfor %}

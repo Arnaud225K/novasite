@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static catalog_tags %}
+
+{% block title_page %}
+    Спасибо за заказ!
+{% endblock %}
+
+{% block meta_keywords %}
+    Спасибо за заказ!
+{% endblock %}
+
+{% block meta_description %}
+    Спасибо за заказ! Наши менеджеры свяжутся с вами в ближайшее время для уточнения деталей.
+{% endblock %}
+
+{% block title_page_og %}
+    Спасибо за заказ!
+{% endblock %}
+
+{% block meta_description_og %}
+    Спасибо за заказ! Наши менеджеры свяжутся с вами в ближайшее время для уточнения деталей.
+{% endblock %}
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/thanks.css'%}">
+{% endblock %}
+
+{% block content %}
+    {% include "pages/thank-you/thank-you.html" %}
+{% endblock %}

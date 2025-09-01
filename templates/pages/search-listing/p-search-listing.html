@@ -1,0 +1,36 @@
+{% load static %}
+{% load catalog_tags %}
+{% load humanize %}
+
+
+{% block content %}
+<main class="category search-results-page">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+        <h1 id="page-h1-title">{{ h1_title }}</h1>
+
+        {% if found_categories %}
+            <section class="found-categories">
+                <h2>Найденные категории</h2>
+                <div class="subcategories"> 
+                    {% for subcat in found_categories %}
+                        {% include 'includes/cards/subcategory-card/subcategory-card.html' %}
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+        
+        <section class="category__products" id="product-list-wrapper">
+            {% with products_list=found_products %}
+                {% include 'includes/partials/_products_partial.html' %}
+            {% endwith %}
+        </section>
+        
+        <div id="pagination-wrapper">
+            {% with products_list=found_products %}
+                {% include 'includes/partials/_pagination_partial.html' %}
+            {% endwith %}
+        </div>
+    </div>
+</main>
+{% endblock %}

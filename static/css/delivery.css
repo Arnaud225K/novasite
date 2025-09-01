@@ -1,0 +1,111 @@
+.delivery {
+    margin-top: 150px
+}
+
+.delivery__info {
+    margin-top: 60px
+}
+
+.delivery__info .row {
+    display: flex;
+    justify-content: space-between
+}
+
+.delivery__info .row:nth-child(even) {
+    flex-direction: row-reverse
+}
+
+.delivery__info .row:nth-child(even) .delivery__text {
+    border-left: 3px solid #bacade;
+    border-right: none
+}
+
+.delivery__text {
+    border-right: 3px solid #bacade;
+    max-width: 500px
+}
+
+.delivery__text-title {
+    padding: 13px 20px;
+    width: 100%;
+    background-color: #228aed;
+    color: #f3f8fe;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: "Arimo", sans-serif;
+    border-radius: 2px
+}
+
+.delivery__text-descr {
+    padding: 35px 16px 45px 16px
+}
+
+.delivery__text-descr p:first-child {
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 500
+}
+
+.delivery__text-descr p:last-child {
+    margin-top: 10px;
+    font-size: 18px
+}
+
+.delivery__image {
+    width: 100%;
+    border-bottom: 3px solid #bacade;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end
+}
+
+.delivery__image img {
+    max-height: 209px;
+    object-fit: contain
+}
+
+@media(max-width: 992px) {
+    .delivery__info {
+        margin-top: 45px
+    }
+    .delivery__text-title {
+        padding: 9px 10px;
+        font-size: 18px
+    }
+    .delivery__text-descr {
+        padding: 16px 10px 0 10px
+    }
+    .delivery__text-descr p:first-child {
+        font-size: 16px;
+        font-weight: 600
+    }
+    .delivery__text-descr p:last-child {
+        font-size: 16px
+    }
+    .delivery__image {
+        align-items: flex-end
+    }
+    .delivery__image img {
+        max-height: 140px
+    }
+    .delivery__text {
+        width: 324px;
+        flex-shrink: 0
+    }
+}
+
+@media(max-width: 768px) {
+    .delivery__info .row,
+    .delivery__info .row:nth-child(2n) {
+        flex-direction: column;
+        gap: 30px
+    }
+    .delivery__text,
+    .delivery__image {
+        border: none;
+        width: 100%
+    }
+    .delivery__info .row:nth-child(2n) .delivery__text {
+        border: none
+    }
+}

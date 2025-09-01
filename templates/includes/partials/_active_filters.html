@@ -1,0 +1,18 @@
+{% if active_filters_list %}
+<section class="active-filters">
+    <div class="active-filters__container">
+        {% for filter_tag in active_filters_list %}
+            <div class="active-filter">
+                <span>{{ filter_tag.value_name }}</span>
+                <button class="active-filter__remove js-remove-filter-btn"
+                        data-group-slug="{{ filter_tag.group_slug }}"
+                        data-value-slug="{{ filter_tag.value_slug }}">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#6A7D94"/>
+                    </svg>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}

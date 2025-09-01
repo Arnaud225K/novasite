@@ -1,0 +1,52 @@
+{% load static review_tags %}
+
+
+{% if homepage_reviews %}
+<section class="reviews">
+    <div class="container">
+        <div class="reviews__title">
+            <div class="main__title">Отзывы</div>
+            <div class="slider__controls"> 
+                <button class="left" id="reviews-left"> 
+                    <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+                    </svg>
+                </button>
+                <button class="right" id="reviews-right"> 
+                    <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="reviews__slider swiper">
+            <div class="reviews__wrapper swiper-wrapper">
+                
+                {% for review in homepage_reviews %}
+                <div class="reviews__item swiper-slide">
+                    <div class="reviews__item-user">
+                        <div class="user__image">
+                            {% if review.avatar %}
+                                <img src="{{ review.avatar.url }}" alt="Аватар {{ review.name }}">
+                            {% else %}
+                                <img src="{% static 'img/icons/profile.svg' %}" alt="profile">
+                            {% endif %}
+                        </div>
+                        <div class="user__info">
+                            <p>{{ review.name }}</p>
+                            <p>{{ review.surname }}</p>
+                            <span>{{ review.created_at|date:"d M, Y" }} г.</span> 
+                        </div>
+                    </div>
+                    <div class="reviews__item-stars">
+                        {% render_stars review.rating %}
+                    </div>
+                    <div class="reviews__item-text">{{ review.text|truncatewords:40 }}</div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

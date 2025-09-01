@@ -1,0 +1,104 @@
+{% load static %}
+
+{% comment %} <section class="advantages">
+    <div class="container">
+        <div class="main__title">Преимущества</div>
+        <div class="advantages__wrapper">
+        <div class="advantages__titles">
+            <div class="tabs">
+                <button class="tabs__btn active" data-tab="option1">
+                    <span>Быстрая доставка</span>
+                    <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+                    </svg>
+                </button>
+                <button class="tabs__btn" data-tab="option2">
+                    <span>Персональный менеджер</span>
+                    <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+                    </svg>
+                </button>
+                <button class="tabs__btn" data-tab="option3">
+                <span>Широкий ассортимент</span>
+                    <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+                    </svg>
+                </button>
+                <button class="tabs__btn" data-tab="option4">
+                    <span>Собственная сеть складов</span>
+                    <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="advantages__descr">
+            <div class="tab-content active" data-tab="option1">
+                <img src="{% static 'img/icons/truck.svg' %}" alt="truck">
+                <div>
+                    <p>О преимуществе подробнее несколько предложений, </p>
+                    <p>О преимуществе подробнее несколько предложений</p>
+                </div>
+            </div>
+            <div class="tab-content" data-tab="option2">
+                <img src="{% static 'img/icons/manager.svg' %}" alt="manager">
+                <div>
+                    <p>О преимуществе подробнее несколько предложений, </p>
+                    <p>О преимуществе подробнее несколько предложений</p>
+                </div>
+            </div>
+            <div class="tab-content" data-tab="option3">
+                <img src="{% static 'img/icons/assortment.svg' %}" alt="assortment">
+                <div>
+                    <p>О преимуществе подробнее несколько предложений, </p>
+                    <p>О преимуществе подробнее несколько предложений</p>
+                </div>
+            </div>
+            <div class="tab-content" data-tab="option4">
+                <img src="{% static 'img/icons/warehouse.svg' %}" alt="warehouse">
+                <div>
+                    <p>О преимуществе подробнее несколько предложений, </p>
+                    <p>О преимуществе подробнее несколько предложений</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="section__btn"><a href="/dostavka-i-oplata/">Подробнее</a></div>
+    </div>
+</section> {% endcomment %}
+
+
+{% if homepage_advantages %}
+<section class="advantages">
+    <div class="container">
+        <div class="main__title">Преимущества</div>
+        <div class="advantages__wrapper">
+            <div class="advantages__titles">
+                <div class="tabs">
+                    {% for advantage in homepage_advantages %}
+                        <button class="tabs__btn {% if forloop.first %}active{% endif %}" data-tab="advantage-{{ advantage.id }}">
+                            <span>{{ advantage.title }}</span>
+                            <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"></path>
+                            </svg>                        
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="advantages__descr">
+                {% for advantage in homepage_advantages %}
+                    <div class="tab-content {% if forloop.first %}active{% endif %}" data-tab="advantage-{{ advantage.id }}">
+                        {% if advantage.icon %}
+                            <img src="{{ advantage.icon.url }}" alt="{{ advantage.title }}">
+                        {% endif %}
+                        <div>
+                            <p>{{ advantage.description|linebreaksbr }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="section__btn"><a href="/dostavka-i-oplata/">Подробнее</a></div>
+    </div>
+</section>
+{% endif %}

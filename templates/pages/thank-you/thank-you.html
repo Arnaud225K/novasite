@@ -1,0 +1,14 @@
+{% load static %}
+
+
+<main class="thankspage">
+    <div class="container">
+        <h1>Благодарим вас за заказ!</h1>
+        <p>{{ message|safe }}</p>
+        {% comment %} <button class="catalog__return">Вернуться в каталог</button> {% endcomment %}
+        <div class="catalog__return_bloc">
+            <a class="catalog__return" href="/">На главную</a>
+            <a class="catalog__return" href="/catalog/">В каталог </a>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static catalog_tags %}
+
+
+
+
+{% block title_page %}
+	500 Ошибка сервера 500  | Новатор
+{% endblock %}
+
+{% block meta_keywords %}
+	быстро, Надежно, Выгодно, {{ current_filial.name_info }}
+{% endblock %}
+
+{% block meta_description %}
+	Новатор - Поставщик металлопроката в {{ current_filial.name_info }}
+{% endblock %}
+
+{% block title_page_og %}
+	Новатор - 500 Ошибка сервера 500  | Новатор
+{% endblock %}
+
+{% block meta_description_og %}
+	Поставщик металлопроката в {{ current_filial.name_info }}
+{% endblock %}
+
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/not_found.css'%}">
+{% endblock %}
+{% block content %}
+    {% include "pages/500/p-500.html" %}
+{% endblock %}

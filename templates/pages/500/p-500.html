@@ -1,0 +1,40 @@
+{% load static %}
+{% comment %} <main>
+    <div class="container">
+    <div class="section__title error500">
+        <h1>500</h1>
+        <p>Ошибка сервера</p>
+        <div class="notfound-actions">
+        <div class="btn">
+            <a href="/">
+            <span>На главную</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.5 19L19.5 12M19.5 12L12.5 5M19.5 12H5.5" stroke="white" stroke-width="1.5" 
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            </a>
+        </div>
+        </div>
+    </div>
+    </div>
+</main> {% endcomment %}
+
+
+<div class="container">
+    <main class="notfound">
+    <div class="notfound__top">
+        <div class="notfound__top-text">500</div>
+    </div>
+    <div class="notfound__bottom">
+        <div class="notfound__bottom-title">Ошибка сервера</div>
+        <div class="notfound__bottom-text">
+        <p>К сожалению, страница, которую вы запросили, не найдена. </p>
+        <p>Вы можете перейти на главную страницу или воспользоваться каталогом товаров</p>
+        </div>
+    </div>
+    <div class="notfound__bottom-btns">
+        <a href="/">На главную</a>
+        <a href="/catalog/">В каталог </a>
+    </div>
+    </main>
+</div>

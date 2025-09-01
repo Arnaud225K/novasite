@@ -1,0 +1,325 @@
+{% extends "admin/base_site.html" %}
+
+{% comment %} {% block extrastyle %}
+    {{ block.super }}
+    <style>
+        .summary-table { width: 100%; max-width: 800px; border-collapse: collapse; margin: 20px 0; }
+        .summary-table th, .summary-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        .summary-table th { background: #f2f2f2; }
+        .failed-rows-table { margin-top: 20px; }
+        .errornote { color: var(--error-fg); background: var(--error-bg); }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h1>{{ title|default:"Результаты Импорта" }}</h1>
+
+<h2>Сводка операции</h2>
+<table class="summary-table">
+    <tr>
+        <th>Всего строк в файле (кроме заголовка)</th>
+        <td>{{ summary.processed }}</td>
+    </tr>
+    <tr>
+        <th>Новых товаров создано</th>
+        <td>{{ summary.created }}</td>
+    </tr>
+    <tr>
+        <th>Существующих товаров обновлено</th>
+        <td>{{ summary.updated }}</td>
+    </tr>
+    <tr>
+        <th>Строк пропущено (без изменений или без SKU)</th>
+        <td>{{ summary.skipped }}</td>
+    </tr>
+    <tr {% if summary.failed_rows %}class="errornote"{% endif %}>
+        <th>Строк с ошибками</th>
+        <td>{{ summary.failed_rows|length }}</td>
+    </tr>
+</table>
+
+{% if summary.failed_rows %}
+    <h2>Детали ошибок</h2>
+    <table class="summary-table failed-rows-table">
+        <thead>
+            <tr>
+                <th>Строка №</th>
+                <th>SKU</th>
+                <th>Причина ошибки</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for error in summary.failed_rows %}
+                <tr>
+                    <td>{{ error.row }}</td>
+                    <td>{{ error.sku|default:"N/A" }}</td>
+                    <td>{{ error.reason }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<p>
+    <a href="{% url 'import_export:product_import' %}">Загрузить другой файл</a> или 
+    <a href="{% url 'admin:products_product_changelist' %}">вернуться к списку товаров</a>.
+</p>
+
+{% endblock %} {% endcomment %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        /* Conteneur principal */
+        #content-main { 
+            max-width: 900px; 
+            margin: 0 auto;
+        }
+        
+        /* Titres */
+        h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #34495e;
+            font-size: 24px;
+            margin: 35px 0 20px 0;
+            font-weight: 600;
+            padding-left: 15px;
+            border-left: 4px solid #3498db;
+        }
+        
+        /* Tableaux */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .summary-table th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 16px 20px;
+            font-weight: 600;
+            text-align: left;
+            font-size: 16px;
+        }
+        
+        .summary-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f1f3f6;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+        
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .summary-table tr:nth-child(even) {
+            background: #fafbfc;
+        }
+        
+        .summary-table tr:hover {
+            background: #f7f9fc;
+            transition: background 0.2s ease;
+        }
+        
+        /* Ligne d'erreurs */
+        .summary-table tr.error-row {
+            background: #fff5f5;
+        }
+        
+        .summary-table tr.error-row td {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        /* Tableau d'erreurs détaillées */
+        .failed-rows-table {
+            margin-top: 30px;
+            border: 2px solid #ffe6e6;
+        }
+        
+        .failed-rows-table th {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .failed-rows-table tr:nth-child(even) {
+            background: #fffafa;
+        }
+        
+        .failed-rows-table tr:hover {
+            background: #fff5f5;
+        }
+        
+        /* Indicateurs visuels */
+        .success-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .created { background: #27ae60; }
+        .updated { background: #f39c12; }
+        .skipped { background: #95a5a6; }
+        .failed { background: #e74c3c; }
+        
+        /* Liens de navigation */
+        .navigation-links {
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fc, #e8f4fd);
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #d6e6f8;
+        }
+        
+        .navigation-links a {
+            display: inline-block;
+            margin: 0 15px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .navigation-links a:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .navigation-links a:last-child {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+        
+        .navigation-links a:last-child:hover {
+            background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.4);
+        }
+        
+        /* Message de succès */
+        .success-message {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            h2 { font-size: 20px; }
+            
+            .summary-table th,
+            .summary-table td {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            
+            .navigation-links a {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+        
+        /* Animation d'apparition */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .summary-table {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>{{ title|default:"✅ Результаты Импорта" }}</h1>
+    
+    {% if summary.failed_rows == 0 %}
+    <div class="success-message">
+        📊 Импорт успешно завершен! Обработано {{ summary.processed }} строк
+    </div>
+    {% endif %}
+    
+    <h2>📈 Сводка операции</h2>
+    <table class="summary-table">
+        <tr>
+            <th>Всего строк в файле (кроме заголовка)</th>
+            <td><span class="success-indicator"></span>{{ summary.processed }}</td>
+        </tr>
+        <tr>
+            <th>Новых товаров создано</th>
+            <td><span class="success-indicator created"></span>{{ summary.created }}</td>
+        </tr>
+        <tr>
+            <th>Существующих товаров обновлено</th>
+            <td><span class="success-indicator updated"></span>{{ summary.updated }}</td>
+        </tr>
+        <tr>
+            <th>Строк пропущено (без изменений или без SKU)</th>
+            <td><span class="success-indicator skipped"></span>{{ summary.skipped }}</td>
+        </tr>
+        <tr class="{% if summary.failed_rows %}error-row{% endif %}">
+            <th>Строк с ошибками</th>
+            <td><span class="success-indicator failed"></span>{{ summary.failed_rows|length }}</td>
+        </tr>
+    </table>
+
+    {% if summary.failed_rows %}
+        <h2>❌ Детали ошибок</h2>
+        <table class="summary-table failed-rows-table">
+            <thead>
+                <tr>
+                    <th>Строка №</th>
+                    <th>SKU</th>
+                    <th>Причина ошибки</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for error in summary.failed_rows %}
+                    <tr>
+                        <td>{{ error.row }}</td>
+                        <td>{{ error.sku|default:"N/A" }}</td>
+                        <td>{{ error.reason }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <div class="navigation-links">
+        <a href="{% url 'import_export:product_import' %}">📤 Загрузить другой файл</a>
+        <a href="{% url 'admin:products_product_changelist' %}">📋 Вернуться к списку товаров</a>
+    </div>
+</div>
+{% endblock %}

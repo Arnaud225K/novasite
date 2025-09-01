@@ -1,0 +1,25 @@
+{% if about_page_content %}
+<section class="about">
+    <div class="container">
+        <div class="main__title">О компании</div>
+        <div class="seo__text">
+            <p>{{ about_page_content.description|safe|truncatewords_html:100 }}</p>
+        </div>
+        <div class="about__metrics">
+        <div class="about__metrics-item">
+            <p>1500+</p>
+            <p>наименований</p>
+        </div>
+        <div class="about__metrics-item">
+            <p>100+</p>
+            <p>поставщиков</p>
+        </div>
+        <div class="about__metrics-item">
+            <p>1500+</p>
+            <p>наименований</p>
+        </div>
+        </div>
+        <div class="section__btn"><a href="{{ about_page_content.get_absolute_url }}">Подробнее</a></div>
+    </div>
+</section>
+{% endif %}

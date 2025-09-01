@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load catalog_tags %}
+
+{% block title_page %}
+    {% if index_title_page %}
+	    {{ index_title_page|my_safe:current_filial|safe|clean_html }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_keywords %}
+    {% if index_meta_keywords %}
+	    {{ index_meta_keywords|my_safe:current_filial|safe|clean_html }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description %}
+    {% if index_meta_description %}
+	    {{ index_meta_description|my_safe:current_filial|safe|clean_html }}
+    {% endif %}
+{% endblock %}
+
+
+{% block title_page_og %}
+    {% if index_title_page %}
+	    {{ index_title_page|my_safe:current_filial|safe|clean_html }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description_og %}
+    {% if index_meta_description %}
+	    {{ index_meta_description|my_safe:current_filial|safe|clean_html }}
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <main>
+    {% include "pages/main/main-cover.html" %}
+    {% include "pages/main/main-categorie.html" %}
+    {% include "pages/main/main-about.html" %}
+    {% include "pages/main/main-advantages.html" %}
+    {% include "pages/main/main-small-form.html" %}
+    {% include "pages/main/main-offers.html" %}
+    {% include "pages/main/main-articles.html" %}
+    {% include "pages/main/main-reviews.html" %}
+    {% include "pages/main/main-form.html" %}
+    </main>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/advantagesTabSwitcher.js' %}" defer></script>
+    <script src="{% static 'js/articlesAccordion.js' %}" defer></script>
+    <script src="{% static 'js/mainSliders.js' %}" defer></script>
+{% endblock script %}

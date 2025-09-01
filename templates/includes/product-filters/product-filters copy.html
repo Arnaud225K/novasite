@@ -1,0 +1,82 @@
+{% load static %}
+
+{% comment %} <section class="filters">
+    <div class="filters__title">Фильтры</div>
+    <div class="filters__wrapper">
+        <div class="filters__box">
+            <div class="filters__box-item" data-filter="size-1">
+                <span>Размер</span>
+                <div class="arrow"></div>
+                <div class="filters__dropdown hidden">
+                    <div class="search-box"><input type="text" placeholder="Поиск..." class="filter-search"></div>
+                    <label><input type="checkbox" name="size" value="all">Все</label>
+                    <label><input type="checkbox" name="size" value="1x1">1×1</label>
+                    <label><input type="checkbox" name="size" value="2x2">2×2</label>
+                </div>
+            </div>
+            <div class="filters__box-item" data-filter="size-2">
+                <span>Размер</span>
+                <div class="arrow"></div>
+                <div class="filters__dropdown hidden">
+                    <div class="search-box"><input type="text" placeholder="Поиск..." class="filter-search"></div>
+                    <label><input type="checkbox" name="size" value="all">Все</label>
+                    <label><input type="checkbox" name="size" value="1x1">1×1</label>
+                    <label><input type="checkbox" name="size" value="2x2">2×2</label>
+                </div>
+            </div>
+            <div class="filters__box-item" data-filter="size-3">
+                <span>Размер</span>
+                <div class="arrow"></div>
+                <div class="filters__dropdown hidden">
+                    <div class="search-box"><input type="text" placeholder="Поиск..." class="filter-search"></div>
+                    <label><input type="checkbox" name="size" value="all">Все</label>
+                    <label><input type="checkbox" name="size" value="1x1">1×1</label>
+                    <label><input type="checkbox" name="size" value="2x2">2×2</label>
+                </div>
+            </div>
+            <div class="filters__box-item" data-filter="size-4">
+                <span>Размер</span>
+                <div class="arrow"></div>
+                <div class="filters__dropdown hidden">
+                    <div class="search-box"><input type="text" placeholder="Поиск..." class="filter-search"></div>
+                    <label><input type="checkbox" name="size" value="all">Все</label>
+                    <label><input type="checkbox" name="size" value="1x1">1×1</label>
+                    <label><input type="checkbox" name="size" value="2x2">2×2</label>
+                </div>
+            </div>
+        </div>
+        <div class="filters__buttons"> 
+            <button>Применить</button>
+            <button> 
+                <span>Сбросить</span>
+                <img src="{% static 'img/icons/del.svg' %}" alt="">
+            </button>
+        </div>
+    </div>
+</section> {% endcomment %}
+
+
+
+
+<section class="filters">
+    <div class="filters__title">Фильтры</div>
+    <form method="get" class="filters__wrapper" id="filters-form">
+        <div class="filters__box">
+            {% for filter_cat in applicable_filter_categories %}
+                <div class="filters__box-item js-filter-group" data-filter-category-id="{{ filter_cat.id }}" data-filter-category-slug="{{ filter_cat.slug }}"> 
+                    <span>{{ filter_cat.name }}</span>
+                    <div class="arrow"></div>
+                    <div class="filters__dropdown hidden">
+                        <div class="spinner">Загрузка...</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="filters__buttons"> 
+            <button type="submit">Применить</button>
+            <a href="{{ request.path }}"> <span>Сбросить</span><img src="{% static 'img/icons/del.svg' %}" alt="del_filter"></a>
+        </div>
+    </form>
+</section>
+
+    

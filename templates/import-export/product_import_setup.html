@@ -1,0 +1,247 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+    <style>
+        #content-main { 
+            max-width: 1400px; 
+            min-width: 1400px;
+            width: 1400px; 
+            margin: 0 auto; 
+        }
+        
+        #content-main h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        #content-main form {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e3e8f2;
+        }
+        
+        #content-main .form-row {
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f1f3f6;
+        }
+        
+        #content-main .form-row:last-child {
+            border-bottom: none;
+        }
+        
+        #content-main label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        #content-main input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #dbe4f0;
+            border-radius: 8px;
+            background: #fafbfc;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        #content-main input[type="file"]:hover {
+            border-color: #3498db;
+            background: #f7f9fc;
+        }
+        
+        #content-main input[type="file"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+        
+        #content-main button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        #content-main button:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        #content-main button:active {
+            transform: translateY(0);
+        }
+        
+        #content-main .errornote {
+            background: #ffe6e6;
+            color: #e74c3c;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #fadbd8;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        
+        .instructions {
+            background: linear-gradient(135deg, #f8f9fc, #e8f4fd);
+            border: 1px solid #d6e6f8;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 25px;
+            color: #34495e;
+            line-height: 1.6;
+        }
+        
+        .instructions li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .instructions li:before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        .instructions strong {
+            color: #2c3e50;
+        }
+        
+        .instructions code {
+            background: #e8f4fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #2980b9;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+        }
+        
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>{{ title|default:"Импорт Продуктов" }}</h1>
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'import_export:product_import_process' %}">
+        {% csrf_token %}
+        <div class="form-row">
+            {{ form.file.label_tag }}
+            {{ form.file }}
+            {% if form.file.errors %}<div class="errornote">{{ form.file.errors }}</div>{% endif %}
+        </div>
+        
+        <button type="submit">📤 Загрузить и обработать</button>
+    </form>
+
+    {% comment %} <div class="instructions">
+        <h3>📋 Инструкции</h3>
+        <ul>
+            <li>Файл должен быть в формате <strong>.xlsx</strong>.</li>
+            <li>Обязательные колонки: <strong>SKU</strong> и <strong>Title</strong>.</li>
+            <li>Колонка <strong>SKU</strong> используется для поиска и обновления существующих товаров. Если товар с таким SKU не найден, он будет создан.</li>
+            <li>Колонка <strong>Category ID</strong> должна содержать цифровой ID категории из системы.</li>
+            <li>Для колонок фильтров (напр., <em>"Фильтр: Цвет (tsvet)"</em>), значения разделяются вертикальной чертой (<strong>|</strong>). Например: <code>Красный|Синий</code>.</li>
+        </ul>
+    </div> {% endcomment %}
+<div class="instructions">
+    <h3>📋 Инструкции по импорту</h3>
+    
+    <h4>Основные принципы:</h4>
+    <ul>
+        <li>Файл должен быть в формате <strong>.xlsx</strong>.</li>
+        <li>Первая строка файла используется как заголовок и должна содержать названия колонок.</li>
+    </ul>
+
+    <h4>Обязательные колонки:</h4>
+    <ul>
+        <li>
+            <strong>Базовое название</strong> (<code>Базовое название</code>):
+            Основное название продукта без характеристик (например, <em>"Канат стальной"</em>).
+        </li>
+        <li>
+            <strong>ID Категории</strong> (<code>ID Категории</code>):
+            Цифровой ID категории из админ-панели. Новые продукты без валидного ID будут пропущены.
+        </li>
+    </ul>
+
+    <h4>Колонки для обновления и создания:</h4>
+    <ul>
+        <li>
+            <strong>Артикул (SKU)</strong> (<code>Артикул (SKU)</code>):
+            <ul>
+                <li><strong>Если SKU указан:</strong> Система найдет товар с этим SKU и обновит его. Если не найдет, создаст новый товар с этим SKU.</li>
+                <li><strong>Если SKU пустой:</strong> Система <strong>всегда</strong> создаст новый товар и сгенерирует для него уникальный числовой SKU автоматически.</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h4>Опциональные колонки:</h4>
+    <ul>
+        <li>
+            <strong>Базовая цена</strong> (<code>Базовая цена</code>): Цена продукта. Используйте точку <code>.</code> как разделитель для копеек (напр., <code>1250.50</code>). Оставьте пустым или укажите <code>0</code> для цены "Договорная".
+        </li>
+        <li>
+            <strong>Тип цены</strong> (<code>Тип цены</code>): Введите точное значение: <code>Фиксированная цена</code> или <code>от</code>.
+        </li>
+        <li>
+            <strong>Ед. изм.</strong> (<code>Ед. изм.</code>): Единица измерения (напр., <code>шт</code>, <code>м</code>, <code>кг</code>).
+        </li>
+        <li>
+            <strong>Имена файлов изображений (|)</strong> (<code>Имена файлов изображений (|)</code>):
+            Укажите имена файлов, предварительно загруженных в "Импорт изображений". Для нескольких изображений используйте разделитель <code>|</code>. Например: <code>kanat-1.webp|kanat-2.webp</code>.
+        </li>
+    </ul>
+
+    <h4>Колонки фильтров:</h4>
+    <ul>
+        <li>
+            <strong>Формат заголовка:</strong> <code>Фильтр: Имя фильтра (slug-фильтра) [ед. изм.]</code>.
+            <ul>
+                <li><code>Имя фильтра</code>: Название, которое вы хотите дать группе (напр., <em>Диаметр</em>).</li>
+                <li><code>slug-фильтра</code>: Идентификатор в латинице (напр., <em>diametr</em>).</li>
+                <li><code>[ед. изм.]</code>: Единица измерения в скобках, опционально (напр., <em>[мм]</em>).</li>
+            </ul>
+        </li>
+        <li>Если группа фильтров с таким <strong>slug</strong> не существует, она будет <strong>создана автоматически</strong>.</li>
+        <li>
+            <strong>Значения:</strong> Для нескольких значений в одной ячейке используйте разделитель <code>|</code>. Например: <code>12|16|20</code>.
+        </li>
+    </ul>
+</div>
+</div>
+{% endblock %}

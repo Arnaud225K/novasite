@@ -1,0 +1,54 @@
+{% load static %}    
+<div class="modal" id="callback-modal" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="callback-modal-title">
+            <div class="modal__header">
+                <button class="modal__close" aria-label="Закрыть" data-micromodal-close>
+                    <img src="{% static 'img/icons/close.svg' %}" alt="">
+                </button>
+                <div id="callback-modal-title">Заказать звонок</div>
+                <p>Оставьте контакты. Менеджер Вам перезвонит</p>
+            </div>
+            <div class="modal__content">
+                <form class="modal__form" id="form_callback_id" method="post" action="{% url 'checkout:send_form_order' %}">
+                    {% csrf_token %}
+                    <input name="comp_input_hidden" value="">
+                    <div style="position:absolute; left:-9000px; top: -9000px; height:1px; width:1px; overflow:hidden;" aria-hidden="true">
+                        <label for="id_hp_confirm_url">Подтвердите URL (оставьте пустым)</label>
+                        <input type="text" name="website_url_confirm" id="id_hp_confirm_url" value="" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="form_render_timestamp" value="{{ form_render_timestamp_value }}">
+                    <input type="hidden" name="type" value="callback">
+
+                    <input type="text" name="name" placeholder="Имя">
+                    <input type="tel" name="phone" placeholder="+7 999 999-99-99*" required data-phone>
+                    <div id="phone-error" class="phone-error" style="display:none; color:red;">Неправильный номер телефона</div>
+
+                    <p>*Обязательное поле для заполнения</p>
+                    <div class="form-send">
+                        <button class="btn submit-form-btn" type="submit">Отправить</button>
+                        <div class="js-error form-error-global" style="display:none;"></div> 
+
+                        <div class="form-block__agreement"> 
+                            <label>
+                                <input type="checkbox" name="agreement">
+                                <div class="custom-icon"></div>
+                                <p>Я даю свое согласие на обработку моих персональных данных в соответствии с законом №152-ФЗ "О персональных данных" и <a href="/policy/">Политикой обработки персональных данных</a></p>
+                            </label>
+                            <div class="agreement-error form-error" style="display:none; color:red; margin-top: 5px;">Это поле обязательно для заполнения.</div>
+                            {% comment %} <input type="hidden" name="agreement" id="id_agreement" value=""> {% endcomment %}
+                            
+                            <label>
+                                <input type="checkbox" name="marketing_consent" checked>
+                                <div class="custom-icon"></div>
+                                <p>Я соглашаюсь получать информационно-рекламные материалы</p>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,120 @@
+{% load static %}
+{% load catalog_tags %}
+{% load humanize %}
+
+
+<main class="product_page">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+        <h1 id="page-h1-title">{{ product.full_title }}</h1>
+        <section class="product__wrapper">
+            <div class="product__info">
+                <div class="product__images">
+                    {% with all_images=product.images.all %}
+                        <div class="product__images-image">
+                            {% with main_image=all_images.first %}
+                                {% if main_image %}
+                                    <img src="{{ main_image.image.url }}" alt="{{ main_image.alt_text|default:product.full_title }}">
+                                {% else %}
+                                    <img src="{% static 'img/images/default_product.webp' %}" alt="{{ product.full_title }}">
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="product__images-list">
+                            {% for image in all_images|slice:"3" %}
+                                <div><img src="{{ image.image.url }}" alt="{{ image.alt_text|default:product.full_title }}"></div>
+                            {% endfor %}
+                        </div>
+                    {% endwith %}
+                </div>
+                {% if product_features %}
+                <div class="product__chars">
+                    <div class="product__chars-title">Характеристики</div>
+                    <div class="product__chars-list">
+                        {% if product.sku %} <div class="char"> <span>Артикул</span><a>{{ product.sku }}</a></div> {% endif %}
+                        {% for feature_name, feature_values in product_features.items %}
+                            <div class="char"> <span>{{ feature_name }}</span><a>{{ feature_values|join:", " }}</a></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="product__descr">
+                    <div class="product__chars-title">Описание</div>
+                    <div class="product__descr-text">{{ product.description|safe|linebreaks }}</div>
+                </div>
+            </div>
+            {% if product.display_price > 0 %}
+            <div class="product__price">
+                <div class="product__price-offer">
+                    <p>Цена <span>за {{ product.unit|default:"шт." }}</span></p>
+                    {% if product.display_price > 0 %}
+                        <p>
+                            {% if product.price_type == 'from' %}от {% endif %}
+                            {{ product.display_price|format_price }} ₽
+                        </p>
+                    {% else %}
+                        <p>{{ product.display_price|format_price }}</p>
+                    {% endif %}
+                </div>
+                <div class="product__price-btn">
+                    <button class="btn js-add-to-cart {% if product.id in cart_product_ids %}in-cart{% endif %}" 
+                            data-product-id="{{ product.id }}">
+                        {% if product.id in cart_product_ids %}
+                            В корзине
+                        {% else %}
+                            В корзину
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+            {% else %}
+                {% include "pages/product/p-product-form.html" %}
+            {% endif %}
+        </section>
+        
+        <!-- PRODUITS RÉCEMMENT VUS -->
+        {% if recently_viewed_products %}
+        <section class="special-offers seen">
+            <div class="special-offers__title">
+                <div class="main__title">Ранее просмотренные товары</div>
+                <div class="slider__controls"> 
+                    <button class="left" id="special-offers-left"> 
+                        <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+                        </svg>
+                    </button>
+                    <button class="right" id="special-offers-right">
+                        <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+                        </svg>
+                    </button>
+                </div>            
+            </div>
+            <div class="special__offers-slider swiper">
+                <div class="special-offers__wrapper swiper-wrapper">
+                    {% for p in recently_viewed_products %}
+                    <div class="product-card swiper-slide {% if p.id in cart_product_ids %}purchased{% endif %}" data-product-id="{{ p.id }}" >
+                        <div class="product-card__image">
+                            <img src="{% if p.images.first %}{{ p.images.first.image.url }}{% else %}{% static 'img/images/default_image.webp' %}{% endif %}" alt="{{ p.title }}">
+                        </div>
+                        <div class="product-card__descr">
+                            <div class="product-card__title">{{ p.full_title }}</div>
+                            <div class="product-card__price">
+                                <div>Цена</div>
+                                <div>{{ p.display_price|format_price }} ₽/ {{ p.unit|default:"шт." }}</div>
+                            </div>
+                            <button class="js-add-to-cart" data-product-id="{{ p.id }}">
+                                {% if p.id in cart_product_ids %}В корзине{% else %}В корзину{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+        
+        {% include "includes/s-all/s-all-seo-text/s-all-seo-text.html" %}
+        {% include "includes/s-all/s-all-form/s-all-form.html" %}
+    </div>
+</main>

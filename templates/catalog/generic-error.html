@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static catalog_tags %}
+
+
+
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/thanks.css'%}">
+{% endblock %}
+
+{% block content %}
+    {% include "pages/generic-error/generic-error.html" %}
+{% endblock %}

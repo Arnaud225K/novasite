@@ -1,0 +1,48 @@
+{% load static %}
+
+
+
+{% if homepage_articles %}
+<section class="articles">
+    <div class="container">
+        <div class="main__title">Статьи</div>
+        <div class="articles__wrapper">
+
+            {% for article in homepage_articles %}
+            <div class="articles__item">
+                <div class="articles__item-image">
+                    <a href="{{ article.get_absolute_url }}">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" alt="{{ article.name }}">
+                        {% else %}
+                            <img src="{% static 'img/images/article.webp' %}" alt="article">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="articles__item-content">
+                    <div class="articles__item-title">
+                        <p>{{ article.name }}</p>
+                        <p>{{ article.overview }}</p>
+                    </div>
+                    <div class="articles__item-descr">
+                        {{ article.description|safe|truncatewords_html:40 }}
+                        <a href="{{ article.get_absolute_url }}">Читать полностью</a>
+                    </div>
+                </div>
+                <div class="articles__item-arrow">
+                    <a href="{{ article.get_absolute_url }}" aria-label="Читать статью {{ article.name }}">
+                        <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+        <div class="section__btn">
+            <a href="{% url 'articles:article_list' %}">Все статьи</a>
+        </div>
+    </div>
+</section>
+{% endif %}

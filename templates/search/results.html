@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load catalog_tags %}
+
+
+{% block meta_description %}
+	{{ h1_title }}
+{% endblock %}
+
+{% block meta_keywords %}
+	{{ h1_title }}
+{% endblock %}
+
+{% block title_page %}
+	{{ h1_title }}
+{% endblock %}
+
+{% block title_page_og %}
+	{{ h1_title }}
+{% endblock %}
+
+{% block meta_description_og %}
+	{{ h1_title }}
+{% endblock %}
+
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/category.css'%}">
+{% endblock %}
+
+{% block content %}
+    {% include "pages/search-listing/p-search-listing.html" %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/pagination-only.js' %}" defer></script>
+{% endblock %}

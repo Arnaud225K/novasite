@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_tags %}
+{% load humanize %}
+
+
+{% block title_page %}
+    {% if current_menu.title_main %}
+	    {{ current_menu.title_main|my_safe:current_filial }}
+    {% else %}
+        Корзина
+    {% endif %}
+{% endblock %}
+
+{% block meta_keywords %}
+    {% if current_menu.keywords %}
+	    {{ current_menu.keywords|my_safe:current_filial }}
+    {% else %}
+        Корзина
+    {% endif %}
+{% endblock %}
+
+{% block meta_description %}
+    {% if current_menu.keywords_description %}
+	    {{ current_menu.keywords_description|my_safe:current_filial }}
+    {% else %}
+        Корзина  В {{ current_filial.name_info }}
+    {% endif %}
+{% endblock %}
+
+{% block title_page_og %}
+    {% if current_menu.title_main %}
+	    {{ current_menu.title_main|my_safe:current_filial }}
+    {% else %}
+        Корзина
+    {% endif %}
+{% endblock %}
+
+{% block meta_description_og %}
+    {% if current_menu.keywords_description %}
+	    {{ current_menu.keywords_description|my_safe:current_filial }}
+    {% else %}
+        Корзина  В {{ current_filial.name_info }}
+    {% endif %}
+{% endblock %}
+
+
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cart.css'%}">
+{% endblock %}
+
+
+{% block content %}
+<main class="cartpage">
+  <div class="container">
+    {% include 'includes/elements/breadcrumb.html' %}
+        <h1>Корзина</h1>
+        <div id="cart-content-wrapper" {% if not cart.cart %}style="display: none;"{% endif %}>
+        <div class="cartpage__info">
+            <div class="cartpage__wrapper">
+                <div>
+                    <h2 class="cartpage__title">Ваш заказ</h2>
+                    <div class="cartpage__list-full" id="cart-items-container">
+                        {# Le partiel ne contient QUE la boucle for des articles #}
+                        {% include 'includes/partials/_cart_items_list.html' %}
+                    </div>
+                </div>
+
+                <div class="cartpage__order">
+                    <p class="cartpage__order-title">Оформление заказа</p>
+                    
+                    <div class="cartpage__order-quantity"> 
+                        <p id="cart-summary-count">{% with count=cart|length %}{{ count }} {% pluralize_ru count 'товар' 'товара' 'товаров' %}{% endwith %}</p>
+                        {% if cart.has_non_fixed_price %}
+                            <p id="cart-summary-price">Договорная</p>
+                        {% else %}
+                            <p id="cart-summary-price">{{ cart.get_total_price|format_price }} ₽</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="cartpage__order-total">
+                        <p>Итого</p>
+                        {% if cart.has_non_fixed_price %}
+                            <p class="sum" id="cart-total-price">Договорная</p>
+                        {% else %}
+                            <p class="sum" id="cart-total-price">{{ cart.get_total_price|format_price }} ₽</p>
+                        {% endif %}
+                    </div>
+
+    
+                    <div class="cartpage__order-form">
+                        <p>Контактные данные</p>
+
+                        <form method="post" action="{% url 'checkout:checkout_page' %}" enctype="multipart/form-data" id="checkout-form" novalidate>
+                            {% csrf_token %}
+
+                            {# Affiche les erreurs globales du formulaire (ex: honeypot, erreurs non liées à un champ) #}
+                            {% if form.non_field_errors %}
+                                <div class="form-error-global">
+                                    {% for error in form.non_field_errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {# --- CHAMP TÉLÉPHONE --- #}
+                            <div class="form-group">
+                                <input type="tel" 
+                                    name="{{ form.phone.name }}" 
+                                    id="{{ form.phone.id_for_label }}" 
+                                    placeholder="+7 999 999-99-99*" 
+                                    value="{{ form.phone.value|default_if_none:'' }}"
+                                    required data-phone>
+                                {% if form.phone.errors %}<div class="form-error">{{ form.phone.errors.as_text }}</div>{% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" 
+                                    name="{{ form.comment.name }}" 
+                                    id="{{ form.comment.id_for_label }}" 
+                                    placeholder="Комментарий" 
+                                    value="{{ form.comment.value|default_if_none:'' }}">
+                                {% if form.comment.errors %}
+                                    <div class="form-error">{{ form.comment.errors.as_text }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.file.id_for_label }}" class="attachment">
+                                    <img src="{% static 'img/icons/file-clip.svg' %}" alt="Прикрепить файл">
+                                    <span id="file-name-display">Прикрепить файл</span>
+                                </label>
+                                <div style="display: none;">{{ form.file }}</div>
+                                {% if form.file.errors %}
+                                    <div class="form-error">{{ form.file.errors.as_text }}</div>
+                                {% endif %}
+                            </div>
+
+                            <p class="required">*Обязательно для заполнения</p>
+                            <button class="btn" type="submit">Оформить заказ</button>
+                            
+                            <div class="form-block__agreement">
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="agreement" id="agreement_visual_checkbox">
+                                        <div class="custom-icon"></div>
+                                        <p>Я даю свое согласие на обработку моих персональных данных в соответствии с законом №152-ФЗ "О персональных данных" и <a href="#" target="_blank">Политикой обработки персональных данных</a></p>
+                                    </label>
+                                    {% if form.agreement.errors %}
+                                        <div class="form-error">{{ form.agreement.errors.as_text }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>
+                                        {{ form.marketing_consent }}
+                                        <div class="custom-icon"></div>
+                                        <p>Я соглашаюсь получать информационно-рекламные материалы</p>
+                                    </label>
+                                    {% if form.marketing_consent.errors %}
+                                        <div class="form-error">{{ form.marketing_consent.errors.as_text }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="cartpage__steps">
+                <h2>Этапы работы с заказом</h2>
+                <div class="cartpage__steps-container">
+                    <div class="cartpage__steps-item"><div class="num">1</div><div class="descr">Оформление заказа</div></div>
+                    <div class="cartpage__steps-item"><div class="num">2</div><div class="descr">Уточнение деталей заказа нашим специалистом</div></div>
+                    <div class="cartpage__steps-item"><div class="num">3</div><div class="descr">Согласование сроков и доставки</div></div>
+                    <div class="cartpage__steps-item"><div class="num">4</div><div class="descr">Подписание договора и оплата счета</div></div>
+                    <div class="cartpage__steps-item"><div class="num">5</div><div class="descr">Изготовление продукции</div></div>
+                    <div class="cartpage__steps-item"><div class="num">6</div><div class="descr">Доставка</div></div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        {# Le message "panier vide" est en dehors du wrapper principal #}
+        <div id="cart-empty-message" class="cart-empty" {% if cart.cart %}style="display: none;"{% else %}style="display: block;"{% endif %}>
+            <p class="empty-message">Ваша корзина пуста.</p>
+            <a href="/catalog/">Продолжить покупки</a>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/cart.js' %}" defer></script>
+{% endblock %}

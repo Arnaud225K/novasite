@@ -1,0 +1,55 @@
+
+{% comment %} {% if current_menu.description %}
+<section class="seo">
+    <h2 class="seo__title">{{ current_menu.name }}</h2>
+    <div class="seo__textblock">
+        {{ current_menu.description|safe }}
+    </div>
+</section>
+{% elif product.description %}
+<section class="seo">
+    <h2 class="seo__title">{{ product.title }}</h2>
+    <div class="seo__textblock">
+        {{ product.description|safe }}
+    </div>
+</section>
+{% else %}
+<section class="seo">
+    <h2 class="seo__title">Заголовок SEO текста</h2>
+    <div class="seo__textblock">
+        <h3>Подзаголовок</h3>
+        <p>Lorem ipsum dolor sit amet consectetur. Ridiculus sed enim ut orci ac sagittis augue et odio. Fames at
+        platea massa nunc lacus. Amet feugiat faucibus sit malesuada. Eu ut turpis ut pellentesque laoreet. Cras
+        libero viverra odio fusce a. Molestie dictum egestas sed habitasse convallis.</p>
+        <div class="seo__hidden-part hidden">
+            <p>Lorem ipsum dolor sit amet consectetur. Ridiculus sed enim ut orci ac sagittis augue et odio. Fames at
+            platea massa nunc lacus. Amet feugiat faucibus sit malesuada. Eu ut turpis ut pellentesque laoreet. Cras
+            libero viverra odio fusce a. Molestie dictum egestas sed habitasse convallis.</p>
+            <p>Lorem ipsum dolor sit amet consectetur. Ridiculus sed enim ut orci ac sagittis augue et odio. Fames at
+            platea massa nunc lacus. Amet feugiat faucibus sit malesuada. Eu ut turpis ut pellentesque laoreet. Cras
+            libero viverra odio fusce a. Molestie dictum egestas sed habitasse convallis.</p>
+        </div>
+    </div>
+</section>
+{% endif %} {% endcomment %}
+
+
+
+<section class="seo">
+    {% comment %} <h2 class="seo__title">Заголовок SEO текста</h2>
+    <div class="seo__textblock">
+        <h3>Подзаголовок</h3>
+        <p>Lorem ipsum dolor sit amet consectetur. Ridiculus sed enim ut orci ac sagittis augue et odio. Fames at
+        platea massa nunc lacus. Amet feugiat faucibus sit malesuada. Eu ut turpis ut pellentesque laoreet. Cras
+        libero viverra odio fusce a. Molestie dictum egestas sed habitasse convallis.</p>
+        <div class="seo__hidden-part hidden">
+            <p>Lorem ipsum dolor sit amet consectetur. Ridiculus sed enim ut orci ac sagittis augue et odio. Fames at
+            platea massa nunc lacus. Amet feugiat faucibus sit malesuada. Eu ut turpis ut pellentesque laoreet. Cras
+            libero viverra odio fusce a. Molestie dictum egestas sed habitasse convallis.</p>
+            <p>Lorem ipsum dolor sit amet consectetur. Ridiculus sed enim ut orci ac sagittis augue et odio. Fames at
+            platea massa nunc lacus. Amet feugiat faucibus sit malesuada. Eu ut turpis ut pellentesque laoreet. Cras
+            libero viverra odio fusce a. Molestie dictum egestas sed habitasse convallis.</p>
+        </div>
+    </div>
+    <div class="seo__readmore">Читать полностью...</div> {% endcomment %}
+</section>

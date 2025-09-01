@@ -1,0 +1,56 @@
+.thankspage {
+    margin-top: 25vh
+}
+
+.thankspage p {
+    margin-top: 30px;
+    font-size: 20px
+}
+
+.catalog__return_bloc {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center
+}
+
+.thankspage .catalog__return {
+    background-color: #228aed;
+    color: #f3f8fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    border: 1px solid #228aed;
+    cursor: pointer;
+    transition: all .2s ease-in;
+    margin-top: 60px;
+    padding: 17px 26px
+}
+
+.thankspage .catalog__return:hover {
+    background-color: #21488b;
+    color: #f3f8fe;
+    border: 1px solid #21488b
+}
+
+@media(max-width: 992px) {
+    .thankspage p {
+        font-size: 18px;
+        margin-top: 30px
+    }
+    .thankspage .catalog__return {
+        margin-top: 44px
+    }
+}
+
+@media(max-width: 576px) {
+    .thankspage p {
+        font-size: 16px;
+        margin-top: 26px
+    }
+    .thankspage .catalog__return {
+        padding: 8px 0;
+        width: 100%
+    }
+}

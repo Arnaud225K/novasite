@@ -1,0 +1,27 @@
+{% load static %}
+{% comment %} <a class="subcategory" href="{{ subcat.get_absolute_url }}"><span>{{ subcat.name }}</span></a> {% endcomment %}
+
+<div class="subcategory">
+    <a class="subcategory__item" href="{{ subcat.get_absolute_url }}">
+        <div class="subcategory__item-title">{{ subcat.name }}</div>
+        <div class="subcategory__item-image"> 
+            {% if category.image %}
+                <img class="subcategory__item-image" src="{{ subcat.image.url }}" alt="{{ subcat.name }}">
+            {% else %}
+                <img class="subcategory__item-image" src="{% static 'img/images/default_image.webp' %}" alt="Default product image">
+            {% endif %}
+        </div>
+    </a>
+</div>
+{% comment %} <div class="catalog__list-item">
+    <a class="popular__item" href="{{ subcat.get_absolute_url }}">
+        <div class="popular__item-title">{{ subcat.name }}</div>
+        <div class="popular__item-image"> 
+            {% if subcat.image %}
+                <img class="popular__item-image" src="{{ subcat.image.url }}" alt="{{ subcat.name }}">
+            {% else %}
+                <img class="popular__item-image" src="{% static 'img/images/default_image.webp' %}" alt="Default product image">
+            {% endif %}
+        </div>
+    </a>
+ </div> {% endcomment %}

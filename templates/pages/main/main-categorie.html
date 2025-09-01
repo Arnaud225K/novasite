@@ -1,0 +1,30 @@
+{% load static %}
+
+{% if popular_categories %}
+<section class="popular">
+    <div class="container">
+        <div class="main__title">Популярные категории</div>
+        <div class="popular__wrapper">
+            {% for category in popular_categories %}
+                <a class="popular__item" href="{{ category.get_absolute_url }}">
+                    <div class="popular__item-title">{{ category.name }}</div>
+                    <div class="popular__item-image">
+                        {% if category.image %}
+                            <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                        {% else %}
+                            <img src="{% static 'img/images/category_img.webp' %}" alt="">
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+
+            <a class="popular__item popular__all" href="/catalog/">
+                <div class="popular__all-title">Все категории</div>
+                <svg class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}

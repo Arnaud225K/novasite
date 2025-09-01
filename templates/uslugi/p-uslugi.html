@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load catalog_tags %}
+
+
+{% block meta_description %}
+    {% if service.keywords_description %}
+	    {{ service.keywords_description|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_keywords %}
+    {% if service.keywords %}
+	    {{ service.keywords|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block title_page %}
+    {% if service.name %}
+	    {{ service.name|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block title_page_og %}
+    {% if service.name %}
+	    {{ service.name|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description_og %}
+    {% if service.keywords_description %}
+	    {{ service.keywords_description|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/services.css'%}">
+{% endblock %}
+
+{% block content %}
+<main class="services-detail">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+
+        <div class="services-detail__title">
+            <h1>{{ service.name }}</h1>
+            
+            <button class="services-detail__order" 
+            data-micromodal-trigger="service-modal"
+            data-service-id="{{ service.id }}"
+            data-service-name="{{ service.name }}">
+                Заказать
+            </button>
+        </div>
+
+        {% if service.image %}
+            <div class="service-detail__image">
+                <img src="{{ service.image.url }}" alt="{{ service.name }}">
+            </div>
+        {% endif %}
+
+        <div class="services-detail__text">
+            {{ service.text|safe }}
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block modal %}
+    {% include "includes/modal/modal-service.html" %}
+{% endblock %}

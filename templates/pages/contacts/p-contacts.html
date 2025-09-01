@@ -1,0 +1,50 @@
+
+{% load static %}
+{% load catalog_tags %}
+
+
+
+<main class="contacts">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+
+        <h1>{{ h1_title }}</h1>
+        <div class="contacts__wrapper">
+            <div class="contacts__data">
+            <div class="contacts__data-title">Контактные данные</div>
+            <div class="contacts__data-items">
+                <div>
+                <p class="contacts__data-subtitle">Адрес:</p>
+                <p>{{ current_filial.address }}</p>
+                </div>
+                <div>
+                <p class="contacts__data-subtitle">Телефон:</p><a href="tel:{{ current_filial.phone|default:'+7(999)999-99-99'|remove_space_href }}"> {{ current_filial.phone|default:'+7(999)999-99-99' }}</a>
+                </div>
+                <div>
+                <p class="contacts__data-subtitle">E-mail:</p><a href="mailto:{{ current_filial.email|default:'test@novator.ru'}}"> {{ current_filial.email|default:'test@novator.ru'}}</a>
+                </div>
+                <div>
+                <p class="contacts__data-subtitle">Часы работы:</p>
+                <p>{{ current_filial.working_hours }}</p>
+                </div>
+            </div>
+            </div>
+            <div class="contacts__map">
+                {{ current_filial.map_code|safe }}
+            </div>
+        </div>
+        {% if current_filial.req_file %}
+        <div class="contacts__documents">
+            <div class="contacts__data-title">Реквизиты компании</div>
+            <div class="contacts__data-file">
+                <img src="{% static 'img/icons/download.svg' %}" alt="download">
+                <a href="{{ current_filial.req_file.url }}" target="_blank">Скачать pdf </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</main>
+
+
+
+

@@ -1,0 +1,14 @@
+{% load static catalog_tags humanize %}
+
+<div class="category__products-title" id="product-count-display">
+    {% with count=products_list.paginator.count %}
+        Найдено {{ count }} {% pluralize_ru count 'наименование' 'наименования' 'наименований' %}
+    {% endwith %}
+</div>
+<div class="category__products-list">
+    {% for product in products_list %}
+        {% include 'includes/partials/_product_card.html' %}
+    {% empty %}
+        <p>По вашему запросу ничего не найдено.</p>
+    {% endfor %}
+</div>

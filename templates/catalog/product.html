@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load catalog_tags %}
+
+
+{% block title_page %}
+    {% if product_meta_title_page %}
+	    {{ product_meta_title_page|my_safe:current_filial|safe|clean_html }}
+    {% else %}
+        {{ h1_title|safe }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_keywords %}
+    {% if product_meta_keywords %}
+	    {{ product_meta_keywords|my_safe:current_filial|safe|clean_html }}
+    {% else %}
+        {{ h1_title|safe }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description %}
+    {% if product_meta_description %}
+	    {{ product_meta_description|my_safe:current_filial|safe|clean_html }}
+    {% else %}
+        {{ h1_title|safe }}
+    {% endif %}
+{% endblock %}
+
+{% block title_page_og %}
+    {% if product_meta_title_page %}
+	    {{ product_meta_title_page|my_safe:current_filial|safe|clean_html }}
+    {% else %}
+        {{ h1_title|safe }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description_og %}
+    {% if product_meta_description %}
+	    {{ product_meta_description|my_safe:current_filial|safe|clean_html }}
+    {% else %}
+        {{ h1_title|safe }}
+    {% endif %}
+{% endblock %}
+
+
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/product.css'%}">
+{% endblock %}
+
+{% block content %}
+    {% include "pages/product/p-product.html" %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/setImages.js' %}" defer></script>
+    <script src="{% static 'js/mainSliders.js' %}" defer></script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% load static %}
+
+<div class="catalog__list-item"> 
+    <a class="popular__item" href="{{ category.get_absolute_url }}">
+        <div class="popular__item-title">{{ category.name }}</div>
+        <div class="popular__item-image"> 
+            {% if category.image %}
+                <img class="popular__item-image" src="{{ category.image.url }}" alt="{{ category.name }}">
+            {% else %}
+                <img class="popular__item-image" src="{% static 'img/images/default_image.webp' %}" alt="Default product image">
+            {% endif %}
+        </div>
+    </a>
+    {% with children=category.prefetched_children %}
+        {% if children %}
+            <ul class="catalog__cats">
+                {% for child in children|slice:":1" %}
+                    <li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
+                {% endfor %}
+            </ul>
+            {% if children|length > 1 %}
+                <a class="catalog__link js-show-more" href="{{ category.get_absolute_url }}"> Смотреть еще </a>
+                {% comment %} <a class="catalog__link js-show-more"
+                    href="#"
+                    data-category-id="{{ category.id }}"
+                    data-next-page="2">
+                Смотреть еще
+                </a> {% endcomment %}
+            {% endif %}
+        {% endif %}
+    {% endwith %}
+</div>

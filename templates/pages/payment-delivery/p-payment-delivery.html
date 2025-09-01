@@ -1,0 +1,57 @@
+{% load static %}    
+
+<main class="delivery">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+        
+        <h1>{{ h1_title }}</h1>
+        <section class="delivery__info">
+            <div class="row">
+            <div class="delivery__text">
+                <div class="delivery__text-title">Этап 1</div>
+                <div class="delivery__text-descr">
+                <p>Заявка и просчет</p>
+                <p>Мы получаем вашу заявку, уточняем параметры и оперативно рассчитываем стоимость. Предоставляем
+                    техническую консультацию при необходимости</p>
+                </div>
+            </div>
+            <div class="delivery__image"> <img src="{% static 'img/images/stage_1.webp' %}" alt=""></div>
+            </div>
+            <div class="row">
+            <div class="delivery__text">
+                <div class="delivery__text-title">Этап 2</div>
+                <div class="delivery__text-descr">
+                <p>СОГЛАСОВАНИЕ И ДОГОВОР</p>
+                <p>Обсуждаем сроки, цены, стандарты и спецификацию. Заключаем договор — просто и прозрачно. Работаем
+                    с юрлицами.</p>
+                </div>
+            </div>
+            <div class="delivery__image"> <img src="{% static 'img/images/stage_2.webp' %}" alt=""></div>
+            </div>
+            <div class="row">
+            <div class="delivery__text">
+                <div class="delivery__text-title">Этап 3</div>
+                <div class="delivery__text-descr">
+                <p>Производство по стандартам</p>
+                <p>Изготавливаем продукцию под заказ — точно по ТЗ. Контроль качества на каждом этапе. Соблюдение ГОСТ,
+                    ТУ и отраслевых требований.</p>
+                </div>
+            </div>
+            <div class="delivery__image"> <img src="{% static 'img/images/stage_3.webp' %}" alt=""></div>
+            </div>
+            <div class="row">
+            <div class="delivery__text">
+                <div class="delivery__text-title">Этап 4</div>
+                <div class="delivery__text-descr">
+                <p>Комплектация и доставка</p>
+                <p>Упаковываем заказ, формируем отгрузочные документы и доставляем в ваш регион точно в срок. Самовывоз
+                    или логистика по РФ и СНГ.</p>
+                </div>
+            </div>
+            <div class="delivery__image"> <img src="{% static 'img/images/stage_4.webp' %}" alt=""></div>
+            </div>
+        </section><!-- PAGEFORM-->
+        {% include "includes/s-all/s-all-form/s-all-form.html" %}
+    </div>
+</main>
+

@@ -1,0 +1,23 @@
+<div class="header-menu__wrapper">
+    <div class="header-menu__tabs">
+        {% for tab_item in catalog_list %}
+            <a href="{{ tab_item.get_absolute_url }}" class="tablink" data-target="submenu-{{ tab_item.id }}">
+                <span>{{ tab_item.name }}</span>
+            </a>
+        {% endfor %}
+    </div>
+    <div class="header-menu__content">
+        {% for tab_item in catalog_list %}
+            <div class="tabcontent" id="submenu-{{ tab_item.id }}">
+                <a class="tabcontent__caption" href="{{ tab_item.get_absolute_url }}">{{ tab_item.name }}</a>
+                <div class="tabcontent__links">
+                    {% for link_item in tab_item.children.all %}
+                        {% if not link_item.is_hidden %}
+                            <a href="{{ link_item.get_absolute_url }}">{{ link_item.name }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,52 @@
+{% load static catalog_tags humanize %}
+{% load menu_tags %}
+
+
+
+<section class="filters" id="filters-container">
+    <form method="get" class="filters__wrapper" id="filters-form">
+        {% csrf_token %} 
+        <div class="filters__box">
+            {% for filter_group in available_filters %}
+                <div class="filters__box-item" data-filter="{{ filter_group.category.slug }}">
+                    <span>
+                        {{ filter_group.category.name }}
+                        {% with selected_values=active_filters|get_item:filter_group.category.slug %}
+                            {% with selected_count=selected_values|length %}
+                                {% if selected_count > 0 %}
+                                    <span class="filter-count">({{ selected_count }})</span>
+                                {% endif %}
+                            {% endwith %}
+                        {% endwith %}
+                    </span>
+                    <div class="arrow"></div>
+                    <div class="filters__dropdown hidden">
+                        <div class="search-box"><input type="text" placeholder="Поиск..." class="filter-search"></div>
+                        <div class="filter-values-list">
+                            {# On boucle sur la nouvelle structure 'values_with_status' #}
+                            {% for item in filter_group.values_with_status %}
+                                {# On ajoute une classe 'disabled' au label si le filtre n'est pas disponible #}
+                                <label class="{% if not item.is_available %}disabled{% endif %}">
+                                    <input type="checkbox" 
+                                        name="{{ filter_group.category.slug }}" 
+                                        value="{{ item.value.slug }}"
+                                        {% if item.value.slug in active_filters|get_item:filter_group.category.slug %}checked{% endif %}
+                                        {# On désactive la case à cocher si le filtre n'est pas disponible #}
+                                        {% if not item.is_available %}disabled{% endif %}>
+                                    {{ item.value.value }}
+                                </label>
+                            {% endfor %}
+                            <div class="filter-no-results-message" style="display: none;">Ничего не найдено</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="filters__buttons"> 
+            <a href="#" class="js-reset-filters-btn"> 
+                <span>Сбросить</span>
+                <img src="{% static 'img/icons/del.svg' %}" alt="">
+            </a>
+        </div>
+    </form>
+</section>

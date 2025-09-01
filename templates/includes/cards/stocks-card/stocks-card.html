@@ -1,0 +1,26 @@
+{% load static %}
+{% load catalog_tags %}
+{% load humanize %}
+
+
+<div class="category__product {% if product.id in cart_product_ids %}purchased{% endif %}" data-product-id="{{ product.id }}">
+    {% if product.id in cart_product_ids %}
+        <img class="purchase_icon" src="{% static 'img/images/purchased.webp' %}" alt="В корзине">
+    {% endif %}
+
+    <img class="category__product-img" 
+            src="{% if product.images.first %}{{ product.images.first.image.url }}{% else %}{% static 'img/images/default_image.webp' %}{% endif %}" 
+            alt="{{ product.full_title }}">
+    
+    <a class="category__product-title" href="{{ product.get_absolute_url }}">{{ product.full_title }}</a>
+    
+    <div class="category__product-price">
+        <div> 
+            <span>Цена</span>
+            <span> от<div id="price">{{ product.display_price|format_price }} ₽</div></span>
+        </div>
+        <button data-product-id="{{ product.id }}">
+            {% if product.id in cart_product_ids %}В корзине{% else %}В корзину{% endif %}
+        </button>
+    </div>
+</div>

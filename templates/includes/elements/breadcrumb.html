@@ -1,0 +1,56 @@
+
+<div class="container-breadcrumbs">
+	<ul class="breadcrumps">
+		{% if not is_index %}
+		<li><a href="/" title="Главная">Главная</a></li>
+		{% endif %}
+		{% if is_search_page %}
+			<li>Поиск</li>
+		{% elif is_offer_page %}
+			<li>Спецпредложения</li>
+		{% elif is_uslugi_page %}
+			<li>Услуги</li>
+		{% elif service %}
+			<li><a href="{% url 'uslugi:uslugi_list' %}">Услуги</a></li>
+			<li>{{ service.name }}</li>
+		{% elif is_articles_page %}
+			<li>Статьи</li>
+		{% elif article %}
+			<li><a href="{% url 'articles:article_list' %}">Статьи</a></li>
+			<li>{{ article.name }}</li>
+        {% elif is_cart_page %}
+            <li>Корзина</li>
+		{% elif is_thank_you %}
+			<li>Спасибо за заказ</li>
+		{% elif is_generic_error %}
+			<li>Ошибка</li>
+		{% elif is_generic_error_404 %}
+			<li>Ошибка 404 </li>
+		{% elif is_generic_error_500 %}
+			<li>Ошибка 500 </li>
+		{% elif ancestors %}
+			{% for ancestor in ancestors %}
+				{% if not forloop.last %}
+					<li>
+						<a href="{{ ancestor.get_absolute_url }}">{{ ancestor.name }}</a>
+					</li>
+				{% else %}
+					{% if product %}
+						<li>
+							<a href="{{ ancestor.get_absolute_url }}">{{ ancestor.name }}</a>
+						</li>
+						<li>{{ product.full_title|safe }}</li>
+					{% else %}
+						<li>{{ ancestor.name }}</li>
+					{% endif %}
+				{% endif %}
+				
+			{% endfor %}
+		{% else %}
+			<li>{{ current_menu.name }}</li>
+		{% endif %}
+		{% if is_sitemap %}
+			<li>Карта сайта</li>
+		{% endif %}
+	</ul>
+</div>

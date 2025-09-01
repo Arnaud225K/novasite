@@ -1,0 +1,34 @@
+{% load static %}
+{% load catalog_tags %}
+{% load humanize %}
+
+
+<main class="category ajax-category" data-category-slug="{{ current_menu.slug }}" data-api-url="{{ base_api_url }}">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+        <h1 id="page-h1-title">{{ h1_title }}</h1>
+        {% if subcategories %}
+            <section class="subcategories">
+                {% for subcat in subcategories %}
+                    {% include 'includes/cards/subcategory-card/subcategory-card.html' %}
+                {% endfor %}
+            </section>
+        {% endif %}
+        {% comment %} {% if available_filters %}
+            <div id="filters-wrapper">
+                {% include 'includes/partials/_filters_partial.html' %}
+            </div>
+        {% endif %}
+        <div id="active-filters-wrapper">
+            {% include 'includes/partials/_active_filters.html' %}
+        </div>
+        <section class="category__products" id="product-list-wrapper">
+            {% include 'includes/partials/_products_partial.html' %}
+        </section>
+        <div id="pagination-wrapper">
+            {% include 'includes/partials/_pagination_partial.html' %}
+        </div> {% endcomment %}
+        {% include "includes/s-all/s-all-seo-text/s-all-seo-text.html" %}
+        {% include "includes/s-all/s-all-form/s-all-form.html" %}
+    </div>
+</main>

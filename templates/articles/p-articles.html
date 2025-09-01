@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load catalog_tags %}
+
+
+{% block meta_description %}
+    {% if article.keywords_description %}
+	    {{ article.keywords_description|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_keywords %}
+    {% if article.keywords %}
+	    {{ article.keywords|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block title_page %}
+    {% if article.name %}
+	    {{ article.name|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block title_page_og %}
+    {% if article.name %}
+	    {{ article.name|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description_og %}
+    {% if article.keywords_description %}
+	    {{ article.keywords_description|my_safe:current_filial }}
+    {% endif %}
+{% endblock %}
+
+
+
+{% block page_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/services.css'%}">
+{% endblock %}
+
+{% block content %}
+<main class="services-detail">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+
+        {% if article.image %}
+            <div class="service-detail__image">
+                <img src="{{ service.image.url }}" alt="{{ article.name }}">
+            </div>
+        {% endif %}
+
+        <div class="services-detail__text">
+            {{ article.text|safe }}
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block modal %}
+    {% include "includes/modal/modal-service.html" %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% load static %}
+
+
+{% if special_offers %}
+<section class="special-offers">
+    <div class="container">
+        <div class="special-offers__title">
+        <div class="main__title">Спецпредложения</div>
+        <div class="slider__controls"> <button class="left" id="special-offers-left"> <svg
+                class="icon icon-arrow-right" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+            </svg></button><button class="right" id="special-offers-right"><svg class="icon icon-arrow-right"
+                viewBox="0 0 24 24" width="24" height="24">
+                <path d="M5 12h14M12 5l7 7-7 7" fill="none" stroke="#228AED" stroke-width="2"> </path>
+            </svg></button></div>
+        </div>
+        <div class="special__offers-slider swiper">
+            <div class="special-offers__wrapper swiper-wrapper">
+                    {% for offer_item in special_offers %}
+                        {% with product=offer_item.product %}
+                            <div class="product-card swiper-slide">
+                                {% include 'includes/cards/offers-card/offers-card.html' %}
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+
+            </div>
+        </div>
+        <div class="section__btn">
+            <a href="{% url 'menu:offer_collection_detail' slug=homepage_collection.slug %}">Смотреть все</a>
+        </div>
+                    
+    </div>
+</section>
+{% endif %}

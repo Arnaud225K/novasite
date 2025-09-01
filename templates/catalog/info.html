@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load catalog_tags %}
+
+
+
+{% block title_page %}
+    {% if current_menu.title_main %}
+	    {{ current_menu.title_main|my_safe:current_filial }}
+    {% else %}
+        {{ h1_title }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_keywords %}
+    {% if current_menu.keywords %}
+	    {{ current_menu.keywords|my_safe:current_filial }}
+    {% else %}
+        {{ h1_title }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description %}
+    {% if current_menu.keywords_description %}
+	    {{ current_menu.keywords_description|my_safe:current_filial }}
+    {% else %}
+        {{ h1_title }}  В {{ current_filial.name_info }}
+    {% endif %}
+{% endblock %}
+
+{% block title_page_og %}
+    {% if current_menu.title_main %}
+	    {{ current_menu.title_main|my_safe:current_filial }}
+    {% else %}
+        {{ h1_title }}
+    {% endif %}
+{% endblock %}
+
+{% block meta_description_og %}
+    {% if current_menu.keywords_description %}
+	    {{ current_menu.keywords_description|my_safe:current_filial }}
+    {% else %}
+        {{ h1_title }}  В {{ current_filial.name_info }}
+    {% endif %}
+{% endblock %}
+
+{% block page_styles %}
+    {% if current_menu.slug == 'policy' %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/policy.css'%}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/category.css'%}">
+    {% elif current_menu.slug == 'dostavka-i-oplata' %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/delivery.css'%}">
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/about.css'%}">
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="compania">
+        {% if current_menu.slug == 'policy' %}
+            {% include "pages/policy/p-policy.html" %}
+        {% elif current_menu.slug == 'dostavka-i-oplata' %}
+            {% include "pages/payment-delivery/p-payment-delivery.html" %}
+        {% else %}
+            {% include "pages/about/p-about.html" %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    {% if current_menu.slug == 'policy' %}
+        <script src="{% static 'js/articlesAccordion.js' %}" defer></script>
+    {% endif %}
+{% endblock script %}

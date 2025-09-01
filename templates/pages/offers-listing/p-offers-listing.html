@@ -1,0 +1,21 @@
+{% load static %}
+{% load catalog_tags %}
+
+
+<main class="spec-offers category data-api-url="{{ base_path_for_js }}"">
+    <div class="container">
+        {% include 'includes/elements/breadcrumb.html' %}
+        
+        <h1 id="page-h1-title">{{ h1_title }}</h1>
+        
+        <section class="category__products" id="product-list-wrapper">
+            {% include 'includes/partials/_products_partial.html' %}
+        </section>
+        
+        <div id="pagination-wrapper">
+            {% include 'includes/partials/_pagination_partial.html' %}
+        </div>
+        {% include "includes/s-all/s-all-seo-text/s-all-seo-text.html" %}
+        {% include "includes/s-all/s-all-form/s-all-form.html" %}
+    </div>
+</main>
